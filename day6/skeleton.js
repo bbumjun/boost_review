@@ -1,8 +1,15 @@
 function initProgram() {
     //read input ..
-    const input = readInput()
-    const [command, ...param] = parseInput(input)
+    readInput()
 
+}
+function readInput() {
+    //read input using readline module
+    parseInput(input)
+}
+function parseInput(input) {
+
+    const [command, ...param] = input.split('$$')
     switch (command) {
         case 'show': {
             show(param)
@@ -24,14 +31,6 @@ function initProgram() {
             throw "잘못된 입력입니다."
         }
     }
-}
-function readInput() {
-    //read input using readline module
-    return input
-}
-function parseInput(input) {
-
-    return input.split('$$')
 }
 
 function show(status) {
@@ -80,6 +79,8 @@ function getNewId() {
 }
 
 function update(id, status) {
+    let initDelay = Date.now()
+    while(Date.now()-initDelay>2000)
     if (data.some(item => {
         if (item.id === id) {
             item.status = status
