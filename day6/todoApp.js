@@ -21,6 +21,12 @@ let data = [
         status: 'done',
         context: 'boostcamp',
         tags: ['programming', 'javascript']
+    },
+    {
+        id: 567,
+        status: 'done',
+        context: 'boostcamp',
+        tags: ['programming', 'javascript']
     }
 ]
 
@@ -68,5 +74,29 @@ function parseInput(input) {
     } catch (e) {
         console.log(e)
     }
+}
+function show(param) {
+    const [status] = param
+    const type = ['current', 'todo', 'doing', 'done']
+    if (param.length!==1||!type.includes(status)) throw '잘못된 입력입니다.'
+    if (status === 'current') console.log(getCurrentStatus())
+    else console.log(getStatus(status))
+
+}
+function getCurrentStatus() {
+    let listByStatus = []
+    const status = ['todo','doing','done']
+    status.forEach(element=> {
+        const list = data.filter(item=>item.status===element)
+        const status = element
+        const listById = list.map(item=>item.id)
+        listByStatus.push({status,list:listById})
+    })
+    return listByStatus.reduce((prev,cur)=> {return `${prev} ${cur.status}: [${cur.list}],`},`현재상태 : `).slice(1,-1)
+
+}
+function getStatus(status) {
+    const dataByStatus = data.filter(element=>element.status ===status)
+    return dataByStatus.reduce((prev,cur)=> {return `${prev} '${cur.context}, ${cur.id}번, 태그[${cur.tags}]',`},`${status}리스트(총 ${dataByStatus.length}건) :`).slice(1,-1)
 }
 initProgram()
