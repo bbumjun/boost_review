@@ -88,7 +88,7 @@ function update(params) {
     }
 }
 
-function del(id) {
+function del(params) {
     if(data.some(item=>item.id===id)){
         data = data.filter(item=>item.id!==id)
     }
