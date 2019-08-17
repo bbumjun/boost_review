@@ -3,6 +3,7 @@
 // - todolist 데이터만 주입받아서 동작된다.
 // - 뒤에 나오는 Observer 기능을 하는 객체는 require로 가져와서 사용한다.
 // - console.log로 출력하는 역할을 할 수 있으며, console.log부분을 별도의 클래스로 분리할 수도 있다(선택사항)
+const util = require('./util')
 function TodoModel (todolist) {
     this.todolist = todolist
 }
@@ -31,10 +32,23 @@ TodoModel.prototype.getStatus = function(status) {
 
 }
 TodoModel.prototype.add = function(params) {
-
+    let [context, tags] = params
+    tags = JSON.parse(tags)
+    const id = util.getNewID()
+    const newTodo = {
+        id,
+        status: 'todo',
+        context,
+        tags
+    }
+    const copied = util.deepcopy(this.todolist)
+    copied.push(newTodo)
+    this.todolist = copied
+    console.log(`${context}가 추가되었습니다.`)
+    console.log(this.getCurrentStatus())
 }
-TodoModel.prototype.update = function(params) {
-
+TodoModel.prototype.update = async function(params) {
+    
 }
 TodoModel.prototype.del = function(params) {
 
