@@ -73,6 +73,24 @@ TodoModel.prototype.update = function(params) {
 
 }
 TodoModel.prototype.del = function(params) {
+    const [id] = params
+    let targetContext,targetStatus
+    let copied = util.deepcopy(this.todolist)
+    if (copied.some(item => item.id == id)) {
+        copied = copied.filter(item => {
+            if (item.id ==id) {
+                targetContext = item.context
+                targetStatus = item.status
+            }
+            return item.id != id
+        })
 
+    } else {
+        console.log('해당 아이디가 없습니다.')
+        return
+    }
+    this.todolist=copied
+    console.log(`${targetContext}가 ${targetStatus}목록에서 삭제되었습니다.`)
+    console.log(this.getCurrentStatus())
 }
 module.exports = TodoModel
