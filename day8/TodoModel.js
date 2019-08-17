@@ -6,5 +6,37 @@
 function TodoModel (todolist) {
     this.todolist = todolist
 }
+TodoModel.prototype.show = function(params) {
+    const [status] = params
+    const type = ['current', 'todo', 'doing', 'done']
+    if (params.length !== 1 || !type.includes(status)) throw '잘못된 입력입니다.'
+    if (status === 'current') console.log(this.getCurrentStatus())
+    else console.log(this.getStatus(status))
+}
+TodoModel.prototype.getCurrentStatus = function() {
+    let listByStatus = []
+    const status = ['todo', 'doing', 'done']
+    status.forEach(element => {
+        const list = this.todolist.filter(item => item.status === element)
+        const status = element
+        const listById = list.map(item => item.id)
+        listByStatus.push({ status, list: listById })
+    })
+    return listByStatus.reduce((prev, cur) => { return `${prev} ${cur.status}: [${cur.list}],` }, `현재상태 : `).slice(0, -1)
 
+}
+TodoModel.prototype.getStatus = function(status) {
+    const listByStatus = this.todolist.filter(element => element.status === status)
+    return listByStatus.reduce((prev, cur) => { return `${prev} '${cur.context}, ${cur.id}번, 태그[${cur.tags}]',` }, `${status}리스트(총 ${listByStatus.length}건) :`).slice(0, -1)
+
+}
+TodoModel.prototype.add = function(params) {
+
+}
+TodoModel.prototype.update = function(params) {
+
+}
+TodoModel.prototype.del = function(params) {
+
+}
 module.exports = TodoModel

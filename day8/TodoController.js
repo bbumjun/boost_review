@@ -19,6 +19,7 @@ class TodoController {
             else {
                 this.rl.pause()
                 this.parseInput(input)
+                this.rl.prompt()
                 this.rl.resume()
             }
         }).on('close', () => process.exit())
