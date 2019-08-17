@@ -4,9 +4,12 @@
 // - 뒤에 나오는 Observer 기능을 하는 객체는 require로 가져와서 사용한다.
 // - console.log로 출력하는 역할을 할 수 있으며, console.log부분을 별도의 클래스로 분리할 수도 있다(선택사항)
 const util = require('./util')
+const Observable = require('./Observable')
+const observable = new Observable()
 function TodoModel (todolist) {
     this.todolist = todolist
 }
+TodoModel.prototype =  Object.create(observable)
 TodoModel.prototype.show = function(params) {
     const [status] = params
     const type = ['current', 'todo', 'doing', 'done']
@@ -23,7 +26,9 @@ TodoModel.prototype.getCurrentStatus = function() {
         const listById = list.map(item => item.id)
         listByStatus.push({ status, list: listById })
     })
-    return listByStatus.reduce((prev, cur) => { return `${prev} ${cur.status}: [${cur.list}],` }, `현재상태 : `).slice(0, -1)
+    const result = listByStatus.reduce((prev, cur) => { return `${prev} ${cur.status}: [${cur.list}],` }, `현재상태 : `).slice(0, -1)
+    this.publish(result)
+    return result
 
 }
 TodoModel.prototype.getStatus = function(status) {
@@ -53,6 +58,11 @@ TodoModel.prototype.update = function(params) {
     const [id, status] = params
     let targetContext
     let copied = util.deepcopy(this.todolist)
+    if(!copied.some(item => item.id == id)) {
+        console.log('해당 아이디가 없습니다.')
+        resolve()
+        return
+    }
     copied = copied.map(item => {
         if (item.id == id) {
             item.status = status

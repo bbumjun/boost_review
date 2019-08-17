@@ -5,7 +5,7 @@
 const uuidv1 = require('uuid/v1')
 module.exports = {
     getNewID() {
-        return uuidv1
+        return uuidv1()
     },
     deepcopy(obj) {
         return JSON.parse(JSON.stringify(obj))
