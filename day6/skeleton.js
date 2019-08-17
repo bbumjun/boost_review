@@ -75,9 +75,9 @@ function getNewId() {
     //make new random integer id
 }
 
-function update(id, status) {
+function update(params) {
     let initDelay = Date.now()
-    while(Date.now()-initDelay>2000)
+    while(Date.now()-initDelay>2000);
     if (data.some(item => {
         if (item.id === id) {
             item.status = status

@@ -116,6 +116,28 @@ function add(params) {
         tags
     }
     data.push(newTodo)
+    console.log(`${context}가 추가되었습니다.`)
+    console.log(getCurrentStatus())
+}
+
+function update(params) {
+    const [id,status] = params
+    const initTime = Date.now()
+    let targetContext
+    while(Date.now()-initTime>2000);
+    data = data.map(item=> {
+        if(item.id==id) {
+            item.status =status
+            targetContext = item.context
+        }
+        return {
+            id:item.id,
+            status:item.status,
+            context:item.context,
+            tags:item.tags
+        }
+    })
+    console.log(`${targetContext} 가 ${status}로 상태가 변경되었습니다`)
     console.log(getCurrentStatus())
 }
 initProgram()
