@@ -47,8 +47,30 @@ TodoModel.prototype.add = function(params) {
     console.log(`${context}가 추가되었습니다.`)
     console.log(this.getCurrentStatus())
 }
-TodoModel.prototype.update = async function(params) {
-    
+TodoModel.prototype.update = function(params) {
+    return new Promise(async (resolve)=>{
+    await util.delay()
+    const [id, status] = params
+    let targetContext
+    let copied = util.deepcopy(this.todolist)
+    copied = copied.map(item => {
+        if (item.id == id) {
+            item.status = status
+            targetContext = item.context
+        }
+        return {
+            id: item.id,
+            status: item.status,
+            context: item.context,
+            tags: item.tags
+        }
+    })
+    this.todolist=copied
+    console.log(`${targetContext} 가 ${status}로 상태가 변경되었습니다`)
+    console.log(this.getCurrentStatus())
+    resolve()
+})
+
 }
 TodoModel.prototype.del = function(params) {
 

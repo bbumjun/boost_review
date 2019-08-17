@@ -14,18 +14,19 @@ class TodoController {
     runTodo() {
         this.rl.setPrompt('명령을 입력하세요: ')
         this.rl.prompt()
-        this.rl.on('line', input => {
+        this.rl.on('line',  async (input) => {
             if (input === 'q') this.rl.close()
             else {
                 this.rl.pause()
-                this.parseInput(input)
+                await this.parseInput(input)
                 this.rl.prompt()
                 this.rl.resume()
             }
         }).on('close', () => process.exit())
 
     }
-    parseInput(input) {
+    async parseInput(input) {
+        return new Promise(async resolve=>{
         const [command, ...param] = input.split('$$')
         try {
             switch (command) {
@@ -38,7 +39,7 @@ class TodoController {
                     break
                 }
                 case 'update': {
-                    this.todoModel.update(param)
+                    await this.todoModel.update(param)
                     break
                 }
                 case 'delete': {
@@ -51,7 +52,12 @@ class TodoController {
             }
         } catch (e) {
             console.log('somethig error... ' + e)
+        } finally {
+            resolve()
         }
+    })
+
     }
+    
 }
 module.exports = TodoController

@@ -10,5 +10,12 @@ module.exports = {
     deepcopy(obj) {
         return JSON.parse(JSON.stringify(obj))
     },
-   
+    delay() {
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve()
+            }, 2000);
+        })
+
+    }
 }
