@@ -58,8 +58,8 @@ const result = data.filter = (item=>item.status===status)
 //use reduce function...
 return str
 }
-function add(context, tags) {
-    try {
+function add(params) {
+    const [context,tags] = params
         const id = getNewId()
         tags = JSON.parse(tags)
         newTodo = {
@@ -69,9 +69,6 @@ function add(context, tags) {
             tags
         }
         data.push(newTodo)
-    } catch (e) {
-        console.log(e)
-    }
 }
 
 function getNewId() {

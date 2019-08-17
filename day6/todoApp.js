@@ -92,11 +92,30 @@ function getCurrentStatus() {
         const listById = list.map(item=>item.id)
         listByStatus.push({status,list:listById})
     })
-    return listByStatus.reduce((prev,cur)=> {return `${prev} ${cur.status}: [${cur.list}],`},`현재상태 : `).slice(1,-1)
+    return listByStatus.reduce((prev,cur)=> {return `${prev} ${cur.status}: [${cur.list}],`},`현재상태 : `).slice(0,-1)
 
 }
 function getStatus(status) {
     const dataByStatus = data.filter(element=>element.status ===status)
-    return dataByStatus.reduce((prev,cur)=> {return `${prev} '${cur.context}, ${cur.id}번, 태그[${cur.tags}]',`},`${status}리스트(총 ${dataByStatus.length}건) :`).slice(1,-1)
+    return dataByStatus.reduce((prev,cur)=> {return `${prev} '${cur.context}, ${cur.id}번, 태그[${cur.tags}]',`},`${status}리스트(총 ${dataByStatus.length}건) :`).slice(0,-1)
+}
+function add(params) {
+    let [context,tags] = params
+    tags = JSON.parse(tags)
+    function getNewId(IDs) {
+        while(1){
+        const tempID = Math.floor(Math.random()*10000)+1
+        if(!IDs.includes(tempID)) return tempID
+        }
+    }
+    const id = getNewId(data.map(item=>item.id))
+    const newTodo = {
+        id,
+        status: 'todo',
+        context,
+        tags
+    }
+    data.push(newTodo)
+    console.log(getCurrentStatus())
 }
 initProgram()
